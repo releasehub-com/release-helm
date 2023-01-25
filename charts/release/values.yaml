@@ -1,0 +1,108 @@
+app:
+  replicas: 1
+  ports:
+  - name: one
+    port: 4001
+    protocol: TCP
+    targetPort: 4001
+sidekiq:
+  replicas: 1
+backend:
+  replicas: 1
+  ports:
+  - name: one
+    port: 3000
+    protocol: TCP
+    targetPort: 3000
+console:
+  replicas: 1
+  ports:
+  - name: one
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  - name: two
+    port: 3000
+    protocol: TCP
+    targetPort: 0
+kubernetesClusterDomain: cluster.local
+pvc:
+  spacedustSidekiqPvc0:
+    storageClass: aws-efs
+    storageRequest: 10Gi
+temporal:
+  replicas: 1
+config:
+  adminUiPassword: ""
+  adminUiUsername: ""
+  airtableApiKey: ""
+  analyticsGoogleServiceAccountCredsPath: ""
+  analyticsRedshiftDbUrl: ""
+  awsAccessKeyId: ""
+  awsSecretAccessKey: ""
+  bitbucketAppClientSecret: ""
+  bitbucketClientId: ""
+  bitbucketClientSecret: ""
+  buildplatform: ""
+  chargebeeApiKey: ""
+  chargebeeWebhookPassword: ""
+  chargebeeWebhookUsername: ""
+  cloudResourceCliKey: ""
+  contentfulAccessToken: ""
+  contentfulPreviewToken: ""
+  contentfulSpaceId: ""
+  databasePassword: ""
+  databaseUser: ""
+  databaseName: "release"
+  ddApiKey: ""
+  ddAppKey: ""
+  defaultSpaceKey: ""
+  freshpaintClientId: ""
+  githubAppClientId: ""
+  githubAppClientSecret: ""
+  githubAppPemKey: ""
+  githubAppWebhookSecret: ""
+  githubClientId: ""
+  githubClientSecret: ""
+  gitlabAppClientSecret: ""
+  gitlabClientSecret: ""
+  mailchimpEndpoint: ""
+  nextPublicEnvironmentType: ""
+  nodeEnv: ""
+  railsMasterKey: ""
+  redisHost: "release-redis"
+  redisPort: "6379"
+  reactAppFreshpaintId: ""
+  releaseAuthenticationToken: ""
+  releaseStaticBuildAwsAccessKeyId: ""
+  releaseStaticBuildAwsSecretAccessKey: ""
+  releaseStaticBuildAwsSessionToken: ""
+  releaseStaticBuildDeployKey: ""
+  releaseStaticBuildGcpCredentials: ""
+  releaseuserAuthToken: ""
+  releaseuserIdentityAuthToken: ""
+  releaseuserPassword: ""
+  releaseuserPrivateKey: ""
+  releaseuserPublicKey: ""
+  rollbarPostServerItem: ""
+  sendgridApiKey: ""
+  slackAppId: ""
+  slackBotToken: ""
+  slackClientId: ""
+  slackClientSecret: ""
+  staticBuildAwsAccessId: ""
+  staticBuildAwsKey: ""
+  staticBuildAwsSecretKey: ""
+  stripePublishableApiKey: ""
+  stripeSecretApiKey: ""
+  stripeWebhookSigningSecret: ""
+  targetarch: ""
+  targetplatform: ""
+  workosApiKey: ""
+  workosWebhookSecret: ""
+tag: latest
+containerRegistry:
+  host: registry.deploytrain.com
+  username: ""
+  password: ""
+

@@ -1,0 +1,51 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "release.fullname" . }}-spacedust-ingress
+  labels:
+  {{- include "release.labels" . | nindent 4 }}
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  rules:
+  - host: create-app.{{ required "config.baseDomain is required" .Values.config.baseDomain }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: app
+            port:
+              number: 4001
+        pathType: Prefix
+        path: /
+  - host: api.{{ required "config.baseDomain is required" .Values.config.baseDomain }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: backend
+            port:
+              number: 3000
+        pathType: Prefix
+        path: /
+  - host: console.{{ required "config.baseDomain is required" .Values.config.baseDomain }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: console
+            port:
+              number: 8080
+        pathType: Prefix
+        path: /
+  - host: console.{{ required "config.baseDomain is required" .Values.config.baseDomain }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: console
+            port:
+              number: 3000
+        pathType: Prefix
+        path: /

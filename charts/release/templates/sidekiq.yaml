@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "release.fullname" . }}-sidekiq
+  labels:
+  {{- include "release.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.sidekiq.replicas }}
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: sidekiq
+      tier: sidekiq
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: sidekiq
+        tier: sidekiq
+    spec:
+      containers:
+      - command:
+        - ./run-sidekiq.sh
+        envFrom:
+        - configMapRef:
+            name: {{ include "release.fullname" . }}-common-configmap
+        - secretRef:
+            name: {{ include "release.fullname" . }}-common-secret
+        - configMapRef:
+            name: {{ include "release.fullname" . }}-backend-configmap
+        - secretRef:
+            name: {{ include "release.fullname" . }}-backend-secret
+        - configMapRef:
+            name: {{ include "release.fullname" . }}-sidekiq-configmap
+        - secretRef:
+            name: {{ include "release.fullname" . }}-sidekiq-secret
+        image: {{ .Values.containerRegistry.host}}/release/spacedust/backend:{{ .Values.tag }}
+        imagePullPolicy: Always
+        name: sidekiq
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+          requests:
+            cpu: 100m
+            memory: 1Gi
+      imagePullSecrets:
+      - name: {{ include "release.fullname" . }}-registry-secrets

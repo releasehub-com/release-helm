@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "release.fullname" . }}-db
+  labels:
+  {{- include "release.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+      tier: db
+  template:
+    metadata:
+      labels:
+        app: db
+        tier: db
+  {{- include "release.labels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: postgres
+        env:
+          - name: POSTGRES_USER
+            value: {{ .Values.config.databaseUser }}
+          - name: POSTGRES_PASSWORD
+            value: {{ .Values.config.databasePassword }}
+        image: postgres:13
+        ports:
+        - name: postgres
+          containerPort: 5432
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "release.fullname" . }}-db
+  labels:
+    app: db
+  {{- include "release.labels" . | nindent 4 }}
+  annotations:
+spec:
+  selector:
+    app: db
+    tier: db
+  {{- include "release.selectorLabels" . | nindent 4 }}
+  ports:
+    - name: postgres
+      port: 5432

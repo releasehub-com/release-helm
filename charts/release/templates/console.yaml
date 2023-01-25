@@ -1,0 +1,103 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "release.fullname" . }}-console
+  labels:
+  {{- include "release.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.console.replicas }}
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: console
+      tier: console
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: console
+        tier: console
+    spec:
+      containers:
+      - command:
+        - bash
+        - -c
+        - cd /app/console/server && yarn start
+        image: {{ .Values.containerRegistry.host}}/release/spacedust/backend:{{ .Values.tag }}
+        imagePullPolicy: Always
+        name: console
+        envFrom:
+        - configMapRef:
+            name: {{ include "release.fullname" . }}-common-configmap
+        - secretRef:
+            name: {{ include "release.fullname" . }}-common-secret
+        - configMapRef:
+            name: {{ include "release.fullname" . }}-backend-configmap
+        - secretRef:
+            name: {{ include "release.fullname" . }}-backend-secret
+        - secretRef:
+            name: {{ include "release.fullname" . }}-console-secret
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        - containerPort: 3000
+          protocol: TCP
+        readinessProbe:
+          exec:
+            command:
+            - curl
+            - -Lf
+            - http://localhost:3000/health
+          failureThreshold: 30
+          periodSeconds: 5
+          timeoutSeconds: 10
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+      - name: backend
+        image: {{ .Values.containerRegistry.host}}/release/spacedust/backend:{{ .Values.tag }}
+        imagePullPolicy: Always
+        command:
+        - ./run-console-spacedust.sh
+        envFrom:
+        - configMapRef:
+            name: {{ include "release.fullname" . }}-common-configmap
+        - secretRef:
+            name: {{ include "release.fullname" . }}-common-secret
+        - configMapRef:
+            name: {{ include "release.fullname" . }}-backend-configmap
+        - secretRef:
+            name: {{ include "release.fullname" . }}-backend-secret
+        - secretRef:
+            name: {{ include "release.fullname" . }}-console-secret
+      imagePullSecrets:
+      - name: {{ include "release.fullname" . }}-registry-secrets
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "release.fullname" . }}-console
+  labels:
+    app: console
+  {{- include "release.labels" . | nindent 4 }}
+  annotations:
+    spacedust.releasehub.com/environment-type: permanent
+    spacedust.releasehub.com/hostname: console-production-lb-spacedust.release.com
+    spacedust.releasehub.com/space-id: "72"
+    spacedust.releasehub.com/user-id: ""
+spec:
+  type: {{ .Values.console.type }}
+  selector:
+    app: console
+    tier: console
+  {{- include "release.selectorLabels" . | nindent 4 }}
+  ports:
+	{{- .Values.console.ports | toYaml | nindent 2 -}}

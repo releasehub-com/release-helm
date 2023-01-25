@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "release.fullname" . }}-app
+  labels:
+  {{- include "release.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.app.replicas }}
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: app
+      tier: app
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: app
+        tier: app
+    spec:
+      containers:
+      - name: app
+        image: {{ .Values.containerRegistry.host}}/release/spacedust/app:{{ .Values.tag }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 4001
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 30
+          httpGet:
+            path: /api/healthcheck
+            port: 4001
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        resources:
+          limits:
+            cpu: 4
+            memory: 4Gi
+          requests:
+            cpu: 2
+            memory: 2Gi
+      imagePullSecrets:
+      - name: registry-secrets
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "release.fullname" . }}-app
+  labels:
+    app: app
+  {{- include "release.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.app.type }}
+  selector:
+    app: app
+    tier: app
+  {{- include "release.selectorLabels" . | nindent 4 }}
+  ports:
+	{{- .Values.app.ports | toYaml | nindent 2 -}}

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "release.fullname" . }}-sidekiq-configmap
+  labels:
+  {{- include "release.labels" . | nindent 4 }}
+data:
+  SEMANTIC_LOGGER_APP: spacedust-sidekiq

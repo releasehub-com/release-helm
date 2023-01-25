@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "release.fullname" . }}-temporal-workers
+  labels:
+  {{- include "release.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.temporal.replicas }}
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: temporal-workers
+      tier: temporal-workers
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: temporal-workers
+        tier: temporal-workers
+    spec:
+      containers:
+      - name: temporal-worker
+        command:
+        - ./run-temporal-worker.sh
+        envFrom:
+        - configMapRef:
+            name: {{ include "release.fullname" . }}-common-configmap
+        - secretRef:
+            name: {{ include "release.fullname" . }}-common-secret
+        - configMapRef:
+            name: {{ include "release.fullname" . }}-temporal-workers-configmap
+        image: {{ .Values.containerRegistry.host}}/release/spacedust/backend:{{ .Values.tag }}
+        imagePullPolicy: Always
+      imagePullSecrets:
+      - name: {{ include "release.fullname" . }}-registry-secrets

@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "release.fullname" . }}-backend
+  labels:
+  {{- include "release.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.backend.replicas }}
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: backend
+      tier: backend
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: backend
+        tier: backend
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }} # TODO: replace with hash of configmaps and secrets
+    spec:
+      containers:
+      - command:
+        - ./run-spacedust.sh
+        envFrom:
+        - configMapRef:
+            name: {{ include "release.fullname" . }}-common-configmap
+        - secretRef:
+            name: {{ include "release.fullname" . }}-common-secret
+        - configMapRef:
+            name: {{ include "release.fullname" . }}-backend-configmap
+        - secretRef:
+            name: {{ include "release.fullname" . }}-backend-secret
+        image: {{ .Values.containerRegistry.host}}/release/spacedust/backend:{{ .Values.tag }}
+        imagePullPolicy: Always
+        livenessProbe:
+          exec:
+            command:
+            - curl
+            - -Lf
+            - http://localhost:3000/health
+          failureThreshold: 40
+          periodSeconds: 5
+          timeoutSeconds: 10
+        name: backend
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        readinessProbe:
+          exec:
+            command:
+            - curl
+            - -Lf
+            - http://localhost:3000/health
+          failureThreshold: 40
+          periodSeconds: 5
+          timeoutSeconds: 10
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 6Gi
+          requests:
+            cpu: 100m
+            memory: 100Mi
+      imagePullSecrets:
+      - name: {{ include "release.fullname" . }}-registry-secrets
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "release.fullname" . }}-backend
+  labels:
+    app: backend
+  {{- include "release.labels" . | nindent 4 }}
+spec:
+  selector:
+    app: backend
+    tier: backend
+  {{- include "release.selectorLabels" . | nindent 4 }}
+  ports:
+	{{- .Values.backend.ports | toYaml | nindent 2 -}}

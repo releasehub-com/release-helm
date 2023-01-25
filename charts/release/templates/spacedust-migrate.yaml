@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "release.fullname" . }}-spacedust-migrate
+  labels:
+  {{- include "release.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      -
+        name: migrate
+        command:
+          - bundle
+          - exec
+          - rails
+          - db:prepare
+        envFrom:
+        - configMapRef:
+            name: {{ include "release.fullname" . }}-common-configmap
+        - secretRef:
+            name: {{ include "release.fullname" . }}-common-secret
+        - configMapRef:
+            name: {{ include "release.fullname" . }}-backend-configmap
+        - secretRef:
+            name: {{ include "release.fullname" . }}-backend-secret
+        image: {{ .Values.containerRegistry.host}}/release/spacedust/backend:{{ .Values.tag }}
+        imagePullPolicy: Always
+      imagePullSecrets:
+      - name: {{ include "release.fullname" . }}-registry-secrets

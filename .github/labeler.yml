@@ -1,0 +1,25 @@
+# Add 'ci' label to any change within the '.github' directory
+ci:
+  - .github/**
+
+frontend:
+  - frontend/**
+
+app:
+  - app/**
+
+# app-test:
+# - app/**/*.test.{ts,js,tsx,jsx}
+# - app/**/*.stories?(.test).{ts,js,tsx,jsx,mdx}
+
+backend:
+  - backend/**
+  
+backend-graphql:
+  - backend/app/graphql/**
+  - backend/spec/graphql/**
+
+admin-ui:
+  - backend/app/views/admin/**
+# backend-test:
+# - backend/spec/**

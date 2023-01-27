@@ -27,6 +27,9 @@ spec:
       containers:
       - command:
         - ./run-spacedust.sh
+        env:
+        - name: REDIS_SERVICE_HOST
+          value: {{ include "release.fullname" . }}-redis
         envFrom:
         - configMapRef:
             name: {{ include "release.fullname" . }}-common-configmap
@@ -38,25 +41,21 @@ spec:
             name: {{ include "release.fullname" . }}-backend-secret
         image: {{ .Values.containerRegistry.host}}/release/spacedust/backend:{{ .Values.tag }}
         imagePullPolicy: Always
-        livenessProbe:
-          exec:
-            command:
-            - curl
-            - -Lf
-            - http://localhost:3000/health
-          failureThreshold: 40
-          periodSeconds: 5
-          timeoutSeconds: 10
+        # livenessProbe:
+        #   httpGet:
+        #     path: "/health"
+        #     port: 3000
+        #   failureThreshold: 40
+        #   periodSeconds: 5
+        #   timeoutSeconds: 10
         name: backend
         ports:
         - containerPort: 3000
           protocol: TCP
         readinessProbe:
-          exec:
-            command:
-            - curl
-            - -Lf
-            - http://localhost:3000/health
+          httpGet:
+            path: "/health"
+            port: 3000
           failureThreshold: 40
           periodSeconds: 5
           timeoutSeconds: 10
@@ -81,6 +80,5 @@ spec:
   selector:
     app: backend
     tier: backend
-  {{- include "release.selectorLabels" . | nindent 4 }}
   ports:
 	{{- .Values.backend.ports | toYaml | nindent 2 -}}

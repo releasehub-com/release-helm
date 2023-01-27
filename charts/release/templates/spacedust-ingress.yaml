@@ -14,7 +14,7 @@ spec:
       paths:
       - backend:
           service:
-            name: app
+            name: {{ include "release.fullname" . }}-app
             port:
               number: 4001
         pathType: Prefix
@@ -24,7 +24,7 @@ spec:
       paths:
       - backend:
           service:
-            name: backend
+            name: {{ include "release.fullname" . }}-backend
             port:
               number: 3000
         pathType: Prefix
@@ -34,7 +34,7 @@ spec:
       paths:
       - backend:
           service:
-            name: console
+            name: {{ include "release.fullname" . }}-console
             port:
               number: 8080
         pathType: Prefix
@@ -44,7 +44,7 @@ spec:
       paths:
       - backend:
           service:
-            name: console
+            name: {{ include "release.fullname" . }}-console
             port:
               number: 3000
         pathType: Prefix

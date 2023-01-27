@@ -36,7 +36,6 @@ spec:
   selector:
     app: redis
     tier: redis
-  {{- include "release.selectorLabels" . | nindent 4 }}
   ports:
     - name: redis
       port: 6379

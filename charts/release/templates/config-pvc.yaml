@@ -4,10 +4,12 @@ metadata:
   name: {{ include "release.fullname" . }}-config
   labels:
   {{- include "release.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/resource-policy": keep
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: nfs
+  storageClassName: {{ include "release.fullname" . }}-nfs
   resources:
     requests:
       storage: 5Gi

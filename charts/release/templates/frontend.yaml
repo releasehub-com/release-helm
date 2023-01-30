@@ -27,13 +27,13 @@ spec:
         image: {{ .Values.containerRegistry.host}}/release/spacedust/frontend:{{ .Values.tag }}
         imagePullPolicy: Always
         ports:
-        - containerPort: 80
+        - containerPort: 4000
           protocol: TCP
         readinessProbe:
           failureThreshold: 30
           httpGet:
             path: /
-            port: 80
+            port: 4000
           initialDelaySeconds: 30
           periodSeconds: 10
         # resources:
@@ -59,4 +59,4 @@ spec:
     app: frontend
     tier: frontend
   ports:
-	{{- .Values.app.ports | toYaml | nindent 2 -}}
+	{{- .Values.frontend.ports | toYaml | nindent 2 -}}

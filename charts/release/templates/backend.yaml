@@ -26,7 +26,14 @@ spec:
     spec:
       containers:
       - command:
-        - ./run-spacedust.sh
+        - bundle
+        - exec
+        - rails
+        - server
+        - -p
+        - "3000"
+        - -b
+        - 0.0.0.0
         env:
         - name: REDIS_SERVICE_HOST
           value: {{ include "release.fullname" . }}-redis
@@ -66,6 +73,13 @@ spec:
           requests:
             cpu: 100m
             memory: 100Mi
+        volumeMounts:
+        - name: config
+          mountPath: /config
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: {{ include "release.fullname" . }}-config
       imagePullSecrets:
       - name: {{ include "release.fullname" . }}-registry-secrets
 ---

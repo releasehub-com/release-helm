@@ -32,11 +32,9 @@ console:
     port: 3000
     protocol: TCP
     targetPort: 0
+cert-manager:
+  enabled: true
 kubernetesClusterDomain: cluster.local
-pvc:
-  spacedustSidekiqPvc0:
-    storageClass: aws-efs
-    storageRequest: 10Gi
 temporal:
   replicas: 1
 config:

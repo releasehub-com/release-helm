@@ -1,23 +1,26 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "release.fullname" . }}-spacedust-migrate
+  name: {{ include "release.fullname" . }}-install
   labels:
   {{- include "release.labels" . | nindent 4 }}
   annotations:
-    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook": post-install
 spec:
   template:
     spec:
       restartPolicy: Never
       containers:
-      -
-        name: migrate
+      - name: install
         command:
           - bundle
           - exec
           - rails
-          - db:prepare
+          - db:create
+          - db:schema:load
+          - db:migrate
+          - db:encryption:init
+          - self_managed:install
         envFrom:
         - configMapRef:
             name: {{ include "release.fullname" . }}-common-configmap

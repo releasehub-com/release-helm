@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "release.fullname" . }}-spacedust-ingress
+  name: {{ include "release.fullname" . }}-ingress
   labels:
   {{- include "release.labels" . | nindent 4 }}
   annotations:
@@ -9,6 +9,16 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
   rules:
+  - host: app.{{ required "config.baseDomain is required" .Values.config.baseDomain }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: {{ include "release.fullname" . }}-frontend
+            port:
+              number: 80
+        pathType: Prefix
+        path: /
   - host: create-app.{{ required "config.baseDomain is required" .Values.config.baseDomain }}
     http:
       paths:

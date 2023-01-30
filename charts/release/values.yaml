@@ -5,6 +5,13 @@ app:
     port: 4001
     protocol: TCP
     targetPort: 4001
+frontend:
+  replicas: 1
+  ports:
+  - name: one
+    port: 80
+    protocol: TCP
+    targetPort: 80
 sidekiq:
   replicas: 1
 backend:

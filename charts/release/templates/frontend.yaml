@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "release.fullname" . }}-frontend
+  labels:
+  {{- include "release.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.frontend.replicas }}
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: frontend
+      tier: frontend
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: frontend
+        tier: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: {{ .Values.containerRegistry.host}}/release/spacedust/frontend:{{ .Values.tag }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 30
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        # resources:
+        #   limits:
+        #     cpu: 4
+        #     memory: 4Gi
+        #   requests:
+        #     cpu: 2
+        #     memory: 2Gi
+      imagePullSecrets:
+      - name: {{ include "release.fullname" . }}-registry-secrets
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "release.fullname" . }}-frontend
+  labels:
+    app: app
+  {{- include "release.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.frontend.type }}
+  selector:
+    app: frontend
+    tier: frontend
+  ports:
+	{{- .Values.app.ports | toYaml | nindent 2 -}}

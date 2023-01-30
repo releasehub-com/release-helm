@@ -48,5 +48,12 @@ spec:
           requests:
             cpu: 100m
             memory: 1Gi
+        volumeMounts:
+        - name: config
+          mountPath: /config
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: {{ include "release.fullname" . }}-config
       imagePullSecrets:
       - name: {{ include "release.fullname" . }}-registry-secrets

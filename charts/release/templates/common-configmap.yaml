@@ -5,10 +5,6 @@ metadata:
   labels:
   {{- include "release.labels" . | nindent 4 }}
 data:
-  RELEASE_ACCOUNT_NAME: {{ required "config.accountName is required" .Values.config.accountName | quote }}
-  RELEASE_VCS_URL: {{ required "config.vcsUrl is required" .Values.config.vcsUrl | quote }}
-  RELEASE_SUPERUSER_EMAIL: {{ required "config.superuserEmail is required" .Values.config.superuserEmail | quote }}
-
   # TODO: review and remove anything that shouldn't be included in a self-managed instance
   WORKOS_CLIENT_ID: client_01G3YD8A3QD15FDGJD79CKY06N
   BITBUCKET_APP_CLIENT_ID: 5sjAXgLFvP7XtfK84M

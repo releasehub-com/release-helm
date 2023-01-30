@@ -28,5 +28,13 @@ spec:
             name: {{ include "release.fullname" . }}-backend-secret
         image: {{ .Values.containerRegistry.host}}/release/spacedust/backend:{{ .Values.tag }}
         imagePullPolicy: Always
+        volumeMounts:
+        - name: config
+          mountPath: /config
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: {{ include "release.fullname" . }}-config
       imagePullSecrets:
       - name: {{ include "release.fullname" . }}-registry-secrets
+

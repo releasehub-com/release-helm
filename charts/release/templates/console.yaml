@@ -78,6 +78,13 @@ spec:
             name: {{ include "release.fullname" . }}-backend-secret
         - secretRef:
             name: {{ include "release.fullname" . }}-console-secret
+        volumeMounts:
+        - name: config
+          mountPath: /config
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: {{ include "release.fullname" . }}-config
       imagePullSecrets:
       - name: {{ include "release.fullname" . }}-registry-secrets
 ---
@@ -88,11 +95,6 @@ metadata:
   labels:
     app: console
   {{- include "release.labels" . | nindent 4 }}
-  annotations:
-    spacedust.releasehub.com/environment-type: permanent
-    spacedust.releasehub.com/hostname: console-production-lb-spacedust.release.com
-    spacedust.releasehub.com/space-id: "72"
-    spacedust.releasehub.com/user-id: ""
 spec:
   type: {{ .Values.console.type }}
   selector:

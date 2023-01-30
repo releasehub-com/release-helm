@@ -13,14 +13,11 @@ spec:
       containers:
       - name: install
         command:
-          - bundle
-          - exec
-          - rails
-          - db:create
-          - db:schema:load
-          - db:migrate
-          - db:encryption:init
-          - self_managed:install
+          - sh
+          - -c
+          - |
+              bundle exec symmetric-encryption --generate --key-path /config/symmetric-encryption
+              bundle exec rails db:create db:schema:load db:migrate self_managed:install
         envFrom:
         - configMapRef:
             name: {{ include "release.fullname" . }}-common-configmap
@@ -32,5 +29,12 @@ spec:
             name: {{ include "release.fullname" . }}-backend-secret
         image: {{ .Values.containerRegistry.host}}/release/spacedust/backend:{{ .Values.tag }}
         imagePullPolicy: Always
+        volumeMounts:
+        - name: config
+          mountPath: /config
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: {{ include "release.fullname" . }}-config
       imagePullSecrets:
       - name: {{ include "release.fullname" . }}-registry-secrets

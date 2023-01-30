@@ -6,3 +6,8 @@ metadata:
   {{- include "release.labels" . | nindent 4 }}
 data:
   SEMANTIC_LOGGER_APP: spacedust-backend
+  RELEASE_ACCOUNT_NAME: {{ required "config.accountName is required" .Values.config.accountName | quote }}
+  RELEASE_VCS_URL: {{ required "config.vcsUrl is required" .Values.config.vcsUrl | quote }}
+  RELEASE_SUPERUSER_EMAIL: {{ required "config.superuserEmail is required" .Values.config.superuserEmail | quote }}
+  SYMMETRIC_ENCRYPTION_CONFIG: /config/symmetric-encryption.yml
+

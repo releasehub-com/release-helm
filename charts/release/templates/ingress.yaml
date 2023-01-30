@@ -4,10 +4,8 @@ metadata:
   name: {{ include "release.fullname" . }}-ingress
   labels:
   {{- include "release.labels" . | nindent 4 }}
-  annotations:
-    kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
+  ingressClassName: nginx
   rules:
   - host: app.{{ required "config.baseDomain is required" .Values.config.baseDomain }}
     http:
@@ -16,7 +14,7 @@ spec:
           service:
             name: {{ include "release.fullname" . }}-frontend
             port:
-              number: 80
+              number: 4000
         pathType: Prefix
         path: /
   - host: create-app.{{ required "config.baseDomain is required" .Values.config.baseDomain }}

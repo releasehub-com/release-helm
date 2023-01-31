@@ -25,7 +25,7 @@ spec:
       containers:
       - name: temporal-worker
         command:
-        - ./run-temporal-worker.sh
+        - bundle exec ./bin/temporal-worker
         envFrom:
         - configMapRef:
             name: {{ include "release.fullname" . }}-common-configmap

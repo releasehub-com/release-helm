@@ -24,7 +24,9 @@ spec:
     spec:
       containers:
       - command:
-        - ./run-sidekiq.sh
+        - bundle
+        - exec
+        - sidekiq
         envFrom:
         - configMapRef:
             name: {{ include "release.fullname" . }}-common-configmap
@@ -36,8 +38,6 @@ spec:
             name: {{ include "release.fullname" . }}-backend-secret
         - configMapRef:
             name: {{ include "release.fullname" . }}-sidekiq-configmap
-        - secretRef:
-            name: {{ include "release.fullname" . }}-sidekiq-secret
         image: {{ .Values.containerRegistry.host}}/release/spacedust/backend:{{ .Values.tag }}
         imagePullPolicy: Always
         name: sidekiq

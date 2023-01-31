@@ -25,12 +25,18 @@ spec:
       containers:
       - name: temporal-worker
         command:
-        - bundle exec ./bin/temporal-worker
+        - bundle
+        - exec
+        - ./bin/temporal-worker
         envFrom:
         - configMapRef:
             name: {{ include "release.fullname" . }}-common-configmap
         - secretRef:
             name: {{ include "release.fullname" . }}-common-secret
+        - configMapRef:
+            name: {{ include "release.fullname" . }}-backend-configmap
+        - secretRef:
+            name: {{ include "release.fullname" . }}-backend-secret
         - configMapRef:
             name: {{ include "release.fullname" . }}-temporal-workers-configmap
         image: {{ .Values.containerRegistry.host}}/release/spacedust/backend:{{ .Values.tag }}

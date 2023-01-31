@@ -10,4 +10,6 @@ data:
   RELEASE_VCS_URL: {{ required "config.vcsUrl is required" .Values.config.vcsUrl | quote }}
   RELEASE_SUPERUSER_EMAIL: {{ required "config.superuserEmail is required" .Values.config.superuserEmail | quote }}
   SYMMETRIC_ENCRYPTION_CONFIG: /config/symmetric-encryption.yml
-
+  TEMPORAL_HOST: {{ include "release.fullname" . }}-temporal
+  TEMPORAL_PORT: "7233"
+  TEMPORAL_NAMESPACE: release

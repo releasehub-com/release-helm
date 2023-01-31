@@ -18,7 +18,7 @@ data:
   WORKOS_CLIENT_ID: client_01G3YD8A3QD15FDGJD79CKY06N
   BITBUCKET_APP_CLIENT_ID: 5sjAXgLFvP7XtfK84M
   GITLAB_APP_CLIENT_ID: 88f191e0b74c00270dd6da3a4027d37f38fc56d061a4ae23011fef0af2003a93
-  REDIS_SERVICE_HOST: {{ .Values.config.redisHost | quote }}
+  REDIS_SERVICE_HOST: {{ .Values.config.redisHost | default (printf "%s-redis" (include "release.fullname" .)) | quote }}
   REDIS_SERVICE_PORT: {{ .Values.config.redisPort | quote}}
   POD_TAIL_TIMEOUT: '300'
   TEMPORAL_HOST: temporal-frontend.temporalio.svc.cluster.local

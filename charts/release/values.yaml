@@ -4,7 +4,7 @@ app:
   type: NodePort
   replicas: 1
   ports:
-  - name: one
+  - name: http
     port: 4001
     protocol: TCP
     targetPort: 4001
@@ -12,7 +12,7 @@ frontend:
   type: NodePort
   replicas: 1
   ports:
-  - name: one
+  - name: http
     port: 4000
     protocol: TCP
     targetPort: 4000
@@ -22,7 +22,7 @@ backend:
   type: NodePort
   replicas: 1
   ports:
-  - name: one
+  - name: http
     port: 3000
     protocol: TCP
     targetPort: 3000
@@ -37,7 +37,7 @@ console:
   - name: two
     port: 3000
     protocol: TCP
-    targetPort: 0
+    targetPort: 3000
 cert-manager:
   enabled: true
 kubernetesClusterDomain: cluster.local
@@ -81,7 +81,7 @@ config:
   nextPublicEnvironmentType: ""
   nodeEnv: ""
   railsMasterKey: ""
-  redisHost: "release-redis"
+  redisHost: ""
   redisPort: "6379"
   reactAppFreshpaintId: ""
   releaseAuthenticationToken: ""

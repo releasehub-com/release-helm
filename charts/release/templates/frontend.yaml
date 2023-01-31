@@ -24,6 +24,11 @@ spec:
     spec:
       containers:
       - name: frontend
+        envFrom:
+        - configMapRef:
+            name: {{ include "release.fullname" . }}-common-configmap
+        - secretRef:
+            name: {{ include "release.fullname" . }}-common-secret
         image: {{ .Values.containerRegistry.host}}/release/spacedust/frontend:{{ .Values.tag }}
         imagePullPolicy: Always
         ports:

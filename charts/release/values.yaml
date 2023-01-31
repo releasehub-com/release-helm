@@ -1,4 +1,7 @@
+ingress:
+  scheme: internal
 app:
+  type: NodePort
   replicas: 1
   ports:
   - name: one
@@ -6,6 +9,7 @@ app:
     protocol: TCP
     targetPort: 4001
 frontend:
+  type: NodePort
   replicas: 1
   ports:
   - name: one
@@ -15,6 +19,7 @@ frontend:
 sidekiq:
   replicas: 1
 backend:
+  type: NodePort
   replicas: 1
   ports:
   - name: one
@@ -22,6 +27,7 @@ backend:
     protocol: TCP
     targetPort: 3000
 console:
+  type: NodePort
   replicas: 1
   ports:
   - name: one

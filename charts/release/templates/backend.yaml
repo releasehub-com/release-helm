@@ -91,6 +91,7 @@ metadata:
     app: backend
   {{- include "release.labels" . | nindent 4 }}
 spec:
+  type: {{ .Values.frontend.type }}
   selector:
     app: backend
     tier: backend

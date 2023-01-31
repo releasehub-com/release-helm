@@ -4,8 +4,16 @@ metadata:
   name: {{ include "release.fullname" . }}-ingress
   labels:
   {{- include "release.labels" . | nindent 4 }}
+  annotations:
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/scheme: {{ .Values.ingress.scheme | quote }}
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
 spec:
-  ingressClassName: nginx
+  ingressClassName: alb
+  tls:
+  - hosts:
+    - {{ required "config.baseDomain is required" .Values.config.baseDomain }}
+    - "*.{{ required "config.baseDomain is required" .Values.config.baseDomain }}"
   rules:
   - host: app.{{ required "config.baseDomain is required" .Values.config.baseDomain }}
     http:

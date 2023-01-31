@@ -10,12 +10,13 @@ spec:
     matchLabels:
       app: db
       tier: db
+      {{- include "release.labels" . | nindent 6 }}
   template:
     metadata:
       labels:
         app: db
         tier: db
-  {{- include "release.labels" . | nindent 8 }}
+        {{- include "release.labels" . | nindent 8 }}
     spec:
       containers:
       - name: postgres
@@ -36,13 +37,13 @@ metadata:
   name: {{ include "release.fullname" . }}-db
   labels:
     app: db
-  {{- include "release.labels" . | nindent 4 }}
+    {{- include "release.labels" . | nindent 4 }}
   annotations:
 spec:
   selector:
     app: db
     tier: db
-  {{- include "release.selectorLabels" . | nindent 4 }}
+    {{- include "release.selectorLabels" . | nindent 4 }}
   ports:
     - name: postgres
       port: 5432

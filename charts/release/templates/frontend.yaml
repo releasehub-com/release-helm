@@ -11,6 +11,7 @@ spec:
     matchLabels:
       app: frontend
       tier: frontend
+      {{- include "release.labels" . | nindent 6 }}
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -21,6 +22,7 @@ spec:
       labels:
         app: frontend
         tier: frontend
+        {{- include "release.labels" . | nindent 8 }}
     spec:
       containers:
       - name: frontend
@@ -57,11 +59,12 @@ metadata:
   name: {{ include "release.fullname" . }}-frontend
   labels:
     app: app
-  {{- include "release.labels" . | nindent 4 }}
+    {{- include "release.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.frontend.type }}
   selector:
     app: frontend
     tier: frontend
+    {{- include "release.selectorLabels" . | nindent 4 }}
   ports:
 	{{- .Values.frontend.ports | toYaml | nindent 2 -}}

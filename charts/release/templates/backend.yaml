@@ -11,6 +11,7 @@ spec:
     matchLabels:
       app: backend
       tier: backend
+      {{- include "release.labels" . | nindent 6 }}
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -21,6 +22,7 @@ spec:
       labels:
         app: backend
         tier: backend
+        {{- include "release.labels" . | nindent 8 }}
       annotations:
         rollme: {{ randAlphaNum 5 | quote }} # TODO: replace with hash of configmaps and secrets
     spec:
@@ -86,11 +88,12 @@ metadata:
   name: {{ include "release.fullname" . }}-backend
   labels:
     app: backend
-  {{- include "release.labels" . | nindent 4 }}
+    {{- include "release.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.backend.type }}
   selector:
     app: backend
     tier: backend
+    {{- include "release.selectorLabels" . | nindent 4 }}
   ports:
 	{{- .Values.backend.ports | toYaml | nindent 2 -}}

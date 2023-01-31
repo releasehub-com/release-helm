@@ -44,7 +44,7 @@ spec:
             cpu: 2
             memory: 2Gi
       imagePullSecrets:
-      - name: registry-secrets
+      - name: {{ include "release.fullname" . }}-registry-secrets
 ---
 apiVersion: v1
 kind: Service

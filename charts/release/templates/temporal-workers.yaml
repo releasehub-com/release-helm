@@ -24,6 +24,7 @@ spec:
         tier: temporal-workers
         {{- include "release.labels" . | nindent 8 }}
     spec:
+      serviceAccountName: {{ template "release.fullname" . }}-cluster-admin
       containers:
       - name: temporal-worker
         command:

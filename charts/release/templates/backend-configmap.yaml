@@ -13,6 +13,7 @@ data:
   TEMPORAL_HOST: {{ include "temporal.componentname" (list . "frontend") }}
   TEMPORAL_PORT: "7233"
   TEMPORAL_NAMESPACE: release
+  AWS_MAX_IAM_SESSION_SECONDS: "3600"
   
   # For temporal admintools
   SQL_PLUGIN: postgres

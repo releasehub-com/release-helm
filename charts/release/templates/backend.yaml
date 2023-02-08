@@ -26,6 +26,7 @@ spec:
       annotations:
         rollme: {{ randAlphaNum 5 | quote }} # TODO: replace with hash of configmaps and secrets
     spec:
+      serviceAccountName: {{ template "release.fullname" . }}-cluster-admin
       containers:
       - command:
         - bundle

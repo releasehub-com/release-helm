@@ -45,7 +45,7 @@ spec:
               SQL_DATABASE=temporal_visibility temporal-sql-tool setup-schema -v 0.0
               SQL_DATABASE=temporal_visibility temporal-sql-tool update-schema --schema-dir /etc/temporal/schema/postgresql/v96/visibility/versioned/
 
-              tctl --ns "$TEMPORAL_NAMESPACE" namespace register
+              #tctl --ns "$TEMPORAL_NAMESPACE" namespace register
         envFrom:
         - configMapRef:
             name: {{ include "release.fullname" . }}-common-configmap

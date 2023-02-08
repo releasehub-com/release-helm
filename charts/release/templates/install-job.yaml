@@ -5,7 +5,7 @@ metadata:
   labels:
   {{- include "release.labels" . | nindent 4 }}
   annotations:
-    "helm.sh/hook": post-install
+    "helm.sh/hook": post-install,post-upgrade
 spec:
   template:
     spec:
@@ -16,8 +16,8 @@ spec:
           - sh
           - -c
           - |
-              bundle exec symmetric-encryption --generate --key-path /config/symmetric-encryption
-              bundle exec rails db:create db:schema:load db:migrate self_managed:install
+              #bundle exec symmetric-encryption --generate --key-path /config/symmetric-encryption
+              #bundle exec rails db:create db:schema:load db:migrate self_managed:install
         envFrom:
         - configMapRef:
             name: {{ include "release.fullname" . }}-common-configmap
@@ -32,6 +32,31 @@ spec:
         volumeMounts:
         - name: config
           mountPath: /config
+      - name: temporal-setup
+        command:
+          - sh
+          - -c
+          - |
+              temporal-sql-tool create-database
+              temporal-sql-tool setup-schema -v 0.0
+              temporal-sql-tool update-schema --schema-dir /etc/temporal/schema/postgresql/v96/temporal/versioned/
+
+              SQL_DATABASE=temporal_visibility temporal-sql-tool create-database
+              SQL_DATABASE=temporal_visibility temporal-sql-tool setup-schema -v 0.0
+              SQL_DATABASE=temporal_visibility temporal-sql-tool update-schema --schema-dir /etc/temporal/schema/postgresql/v96/visibility/versioned/
+
+              tctl --ns "$TEMPORAL_NAMESPACE" namespace register
+        envFrom:
+        - configMapRef:
+            name: {{ include "release.fullname" . }}-common-configmap
+        - secretRef:
+            name: {{ include "release.fullname" . }}-common-secret
+        - configMapRef:
+            name: {{ include "release.fullname" . }}-backend-configmap
+        - secretRef:
+            name: {{ include "release.fullname" . }}-backend-secret
+        image: "{{ .Values.temporal.admintools.image.repository }}:{{ .Values.temporal.admintools.image.tag }}"
+        imagePullPolicy: {{ .Values.temporal.admintools.image.pullPolicy }}
       volumes:
       - name: config
         persistentVolumeClaim:

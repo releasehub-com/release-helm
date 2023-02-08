@@ -13,6 +13,8 @@ data:
   NEXT_PUBLIC_CRA_FRONTEND_BASE_URL: https://app.{{ .Values.config.baseDomain }}
   NEXT_PUBLIC_BACKEND_BASE_URL: https://app.{{ .Values.config.baseDomain }}
   NEXT_PUBLIC_APP_BASE_URL: https://app.{{ .Values.config.baseDomain }}
+  DATABASE_HOST: {{ .Values.config.databaseHost | quote }}
+  DATABASE_NAME: {{ .Values.config.databaseName | quote }}
 
   # TODO: review and remove anything that shouldn't be included in a self-managed instance
   WORKOS_CLIENT_ID: client_01G3YD8A3QD15FDGJD79CKY06N
@@ -21,7 +23,6 @@ data:
   REDIS_SERVICE_HOST: {{ .Values.config.redisHost | default (printf "%s-redis" (include "release.fullname" .)) | quote }}
   REDIS_SERVICE_PORT: {{ .Values.config.redisPort | quote}}
   POD_TAIL_TIMEOUT: '300'
-  TEMPORAL_HOST: temporal-frontend.temporalio.svc.cluster.local
   LOAD_CRON_JOBS: 'true'
   GITLAB_CLIENT_ID: 88f191e0b74c00270dd6da3a4027d37f38fc56d061a4ae23011fef0af2003a93
   REDSHIFT_METRICS_URL: https://metrics-api.releasehub.com/v1/metrics/events/
@@ -31,11 +32,9 @@ data:
   AVATAR_CLOUDFRONT: https://avatar.release.com/
   AWS_DEFAULT_REGION: us-west-2
   BOT_DETECTION_REGEX: AnonX|Romeo-musicBot|telegram-bot|telegra\.ph|yukki|telegram|megasdkrest|youtube_dl|qbittorrent
-  DATABASE_NAME: {{ .Values.config.databaseName | quote }}
   POSTGRES_HOST_AUTH_METHOD: trust
   RAILS_FORCE_SSL: 'true'
   RELEASE_ENV: 'true'
-  DATABASE_HOST: {{ .Values.config.databaseHost | quote }}
   RAILS_ENV: production
   SPACEDUST_ENV: production
   RAILS_LOG_TO_STDOUT: 'true'

@@ -8,6 +8,7 @@ metadata:
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80, "HTTPS":443}]'
     alb.ingress.kubernetes.io/scheme: {{ .Values.ingress.scheme | quote }}
     alb.ingress.kubernetes.io/ssl-redirect: '443'
+    helm.sh/resource-policy: keep
 spec:
   ingressClassName: alb
   tls:

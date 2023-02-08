@@ -5,7 +5,7 @@ metadata:
   labels:
   {{- include "release.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.temporal.replicas }}
+  replicas: {{ .Values.temporal.workers.replicas }}
   revisionHistoryLimit: 3
   selector:
     matchLabels:

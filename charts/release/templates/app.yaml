@@ -23,6 +23,8 @@ spec:
         app: app
         tier: app
         {{- include "release.labels" . | nindent 8 }}
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }} # TODO: replace with hash of configmaps and secrets
     spec:
       containers:
       - name: app
@@ -45,6 +47,11 @@ spec:
           requests:
             cpu: 2
             memory: 2Gi
+        envFrom:
+        - configMapRef:
+            name: {{ include "release.fullname" . }}-common-configmap
+        - secretRef:
+            name: {{ include "release.fullname" . }}-common-secret
       imagePullSecrets:
       - name: {{ include "release.fullname" . }}-registry-secrets
 ---

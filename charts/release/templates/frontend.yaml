@@ -23,6 +23,8 @@ spec:
         app: frontend
         tier: frontend
         {{- include "release.labels" . | nindent 8 }}
+      annotations:
+        rollme: {{ randAlphaNum 5 | quote }} # TODO: replace with hash of configmaps and secrets
     spec:
       containers:
       - name: frontend

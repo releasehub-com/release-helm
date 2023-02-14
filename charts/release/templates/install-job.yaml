@@ -16,8 +16,8 @@ spec:
           - sh
           - -c
           - |
-              #bundle exec symmetric-encryption --generate --key-path /config/symmetric-encryption
-              #bundle exec rails db:create db:schema:load db:migrate self_managed:install
+              bundle exec symmetric-encryption --generate --key-path /config/symmetric-encryption
+              bundle exec rails db:create db:schema:load db:migrate self_managed:install
         envFrom:
         - configMapRef:
             name: {{ include "release.fullname" . }}-common-configmap

@@ -36,9 +36,6 @@ spec:
             - name: http
               containerPort: 22
               protocol: TCP
-          env:
-            - name: TEMPORAL_CLI_ADDRESS
-              value: {{ include "temporal.fullname" . }}-frontend:{{ include "temporal.frontend.grpcPort" . }}
           envFrom:
           - configMapRef:
               name: {{ include "release.fullname" . }}-common-configmap

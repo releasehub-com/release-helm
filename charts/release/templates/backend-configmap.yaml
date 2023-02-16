@@ -7,6 +7,7 @@ metadata:
 data:
   SEMANTIC_LOGGER_APP: spacedust-backend
   RELEASE_CLOUD_PROVIDER: {{ required "config.cloudProvider is required" .Values.config.cloudProvider | quote }}
+  RELEASE_CLOUD_ROLE: {{ required "config.cloudRole is required" .Values.config.cloudRole | quote }}
   RELEASE_CLUSTER_CONTEXT: {{ required "config.clusterContext is required" .Values.config.clusterContext | quote }}
   RELEASE_CLUSTER_REGION: {{ required "config.clusterRegion is required" .Values.config.clusterRegion | quote }}
   RELEASE_ACCOUNT_NAME: {{ required "config.accountName is required" .Values.config.accountName | quote }}

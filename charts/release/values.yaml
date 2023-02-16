@@ -42,7 +42,6 @@ cert-manager:
   enabled: true
 kubernetesClusterDomain: cluster.local
 config:
-  serviceAccountRoleARN: ""
   adminUiPassword: ""
   adminUiUsername: ""
   airtableApiKey: ""

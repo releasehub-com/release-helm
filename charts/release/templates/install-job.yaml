@@ -15,9 +15,19 @@ spec:
         command:
           - sh
           - -c
+          - -e
+          - -u
           - |
-              bundle exec symmetric-encryption --generate --key-path /config/symmetric-encryption
-              bundle exec rails db:create db:schema:load db:migrate self_managed:install
+              if [ ! -e "$SYMMETRIC_ENCRYPTION_CONFIG" ]; then
+                bundle exec symmetric-encryption --generate --key-path /config/symmetric-encryption
+              fi
+
+              if [ ! -e /config/release-db-initialized ]; then
+                bundle exec rails db:create db:schema:load db:migrate self_managed:install
+                touch /config/release-db-initialized
+              fi
+
+              bundle exec rails db:migrate
         envFrom:
         - configMapRef:
             name: {{ include "release.fullname" . }}-common-configmap
@@ -36,16 +46,24 @@ spec:
         command:
           - sh
           - -c
+          - -e
+          - -u
           - |
-              temporal-sql-tool create-database
-              temporal-sql-tool setup-schema -v 0.0
-              temporal-sql-tool update-schema --schema-dir /etc/temporal/schema/postgresql/v96/temporal/versioned/
+              if [ ! -e /config/temporal-db-initialized ]; then
+                temporal-sql-tool create-database
+                temporal-sql-tool setup-schema -v 0.0
+                SQL_DATABASE=temporal_visibility temporal-sql-tool create-database
+                SQL_DATABASE=temporal_visibility temporal-sql-tool setup-schema -v 0.0
+                touch /config/temporal-db-initialized
+              fi
 
-              SQL_DATABASE=temporal_visibility temporal-sql-tool create-database
-              SQL_DATABASE=temporal_visibility temporal-sql-tool setup-schema -v 0.0
+              temporal-sql-tool update-schema --schema-dir /etc/temporal/schema/postgresql/v96/temporal/versioned/
               SQL_DATABASE=temporal_visibility temporal-sql-tool update-schema --schema-dir /etc/temporal/schema/postgresql/v96/visibility/versioned/
 
-              #tctl --ns "$TEMPORAL_NAMESPACE" namespace register
+              if [ ! -e /config/temporal-namespace-registered ]; then
+                tctl --ns "$TEMPORAL_NAMESPACE" namespace register
+                touch /config/temporal-namespace-registered
+              fi
         envFrom:
         - configMapRef:
             name: {{ include "release.fullname" . }}-common-configmap
@@ -57,6 +75,9 @@ spec:
             name: {{ include "release.fullname" . }}-backend-secret
         image: "{{ .Values.temporal.admintools.image.repository }}:{{ .Values.temporal.admintools.image.tag }}"
         imagePullPolicy: {{ .Values.temporal.admintools.image.pullPolicy }}
+        volumeMounts:
+        - name: config
+          mountPath: /config
       volumes:
       - name: config
         persistentVolumeClaim:

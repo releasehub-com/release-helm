@@ -30,6 +30,8 @@ spec:
       - name: frontend
         envFrom:
         - configMapRef:
+            name: {{ include "release.fullname" . }}-frontend-configmap
+        - configMapRef:
             name: {{ include "release.fullname" . }}-common-configmap
         - secretRef:
             name: {{ include "release.fullname" . }}-common-secret

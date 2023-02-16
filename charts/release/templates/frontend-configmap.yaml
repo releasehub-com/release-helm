@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "release.fullname" . }}-frontend-configmap
+  labels:
+  {{- include "release.labels" . | nindent 4 }}
+data:
+  REACT_APP_BACKEND_BASE_URL: https://api.{{ .Values.config.baseDomain }}
+  REACT_APP_FRONTEND_BASE_URL: https://app.{{ .Values.config.baseDomain }}
+  REACT_APP_APP_BASE_URL: https://create-app.{{ .Values.config.baseDomain }}
+  REACT_APP_CONSOLE_INGRESS_URL: https://console.{{ .Values.config.baseDomain }}
+  REACT_APP_ENVIRONMENT_TYPE: self-managed

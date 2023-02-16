@@ -6,10 +6,6 @@ metadata:
   {{- include "release.labels" . | nindent 4 }}
 data:
   SEMANTIC_LOGGER_ENV: production
-  REACT_APP_BACKEND_BASE_URL: https://api.{{ .Values.config.baseDomain }}
-  REACT_APP_FRONTEND_BASE_URL: https://app.{{ .Values.config.baseDomain }}
-  REACT_APP_APP_BASE_URL: https://create-app.{{ .Values.config.baseDomain }}
-  REACT_APP_CONSOLE_INGRESS_URL: https://console.{{ .Values.config.baseDomain }}
   NEXT_PUBLIC_CRA_FRONTEND_BASE_URL: https://app.{{ .Values.config.baseDomain }}
   NEXT_PUBLIC_BACKEND_BASE_URL: https://app.{{ .Values.config.baseDomain }}
   NEXT_PUBLIC_APP_BASE_URL: https://app.{{ .Values.config.baseDomain }}

@@ -6,9 +6,15 @@ metadata:
   {{- include "release.labels" . | nindent 4 }}
 data:
   SEMANTIC_LOGGER_APP: spacedust-backend
+  RELEASE_CLOUD_PROVIDER: {{ required "config.cloudProvider is required" .Values.config.cloudProvider | quote }}
+  RELEASE_CLUSTER_CONTEXT: {{ required "config.clusterContext is required" .Values.config.clusterContext | quote }}
+  RELEASE_CLUSTER_REGION: {{ required "config.clusterRegion is required" .Values.config.clusterRegion | quote }}
   RELEASE_ACCOUNT_NAME: {{ required "config.accountName is required" .Values.config.accountName | quote }}
+  RELEASE_VCS_PLATFORM: {{ required "config.vcsPlatform is required" .Values.config.vcsPlatform | quote }}
   RELEASE_VCS_URL: {{ required "config.vcsUrl is required" .Values.config.vcsUrl | quote }}
+  RELEASE_GITLAB_APP_CLIENT_ID: {{ required "config.gitlabAppClientId is required" .Values.config.gitlabAppClientId | quote }}
   RELEASE_SUPERUSER_EMAIL: {{ required "config.superuserEmail is required" .Values.config.superuserEmail | quote }}
+  RELEASE_SUBDOMAIN: {{ required "config.clusterSubdomain is required" .Values.config.clusterSubdomain | quote }}
   SYMMETRIC_ENCRYPTION_CONFIG: /config/symmetric-encryption.yml
   TEMPORAL_HOST: {{ include "temporal.componentname" (list . "frontend") }}
   TEMPORAL_PORT: "7233"

@@ -124,10 +124,19 @@ spec:
             - name: metrics
               containerPort: 9090
               protocol: TCP
-          {{- if ne $service "worker"}}
+          {{- if eq $service "frontend"}}
           livenessProbe:
-             initialDelaySeconds: 150
-             tcpSocket:
+            exec:
+              command:
+              - tctl
+              - cluster
+              - health
+            initialDelaySeconds: 20
+            periodSeconds: 5
+          {{- else if ne $service "worker"}}
+          livenessProbe:
+            initialDelaySeconds: 150
+            tcpSocket:
                port: rpc
           {{- end }}
           volumeMounts:

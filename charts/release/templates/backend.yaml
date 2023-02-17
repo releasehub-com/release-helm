@@ -48,13 +48,13 @@ spec:
             name: {{ include "release.fullname" . }}-backend-secret
         image: {{ .Values.containerRegistry.host}}/release/spacedust/backend:{{ .Values.tag }}
         imagePullPolicy: Always
-        # livenessProbe:
-        #   httpGet:
-        #     path: "/health"
-        #     port: 3000
-        #   failureThreshold: 40
-        #   periodSeconds: 5
-        #   timeoutSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: "/health"
+            port: 3000
+          failureThreshold: 40
+          periodSeconds: 5
+          timeoutSeconds: 10
         name: backend
         ports:
         - containerPort: 3000

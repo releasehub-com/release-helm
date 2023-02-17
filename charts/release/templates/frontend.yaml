@@ -24,17 +24,17 @@ spec:
         tier: frontend
         {{- include "release.labels" . | nindent 8 }}
       annotations:
-        rollme: {{ randAlphaNum 5 | quote }} # TODO: replace with hash of configmaps and secrets
+        checksum/config: {{ include "checksumTemplates" (list $ "common-configmap" "common-secret" "frontend-configmap") }}
     spec:
       containers:
       - name: frontend
         envFrom:
         - configMapRef:
-            name: {{ include "release.fullname" . }}-frontend-configmap
-        - configMapRef:
             name: {{ include "release.fullname" . }}-common-configmap
         - secretRef:
             name: {{ include "release.fullname" . }}-common-secret
+        - configMapRef:
+            name: {{ include "release.fullname" . }}-frontend-configmap
         image: {{ .Values.containerRegistry.host}}/release/spacedust/frontend:{{ .Values.tag }}
         imagePullPolicy: Always
         ports:

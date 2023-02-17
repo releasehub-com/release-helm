@@ -23,6 +23,8 @@ spec:
         app: temporal-workers
         tier: temporal-workers
         {{- include "release.labels" . | nindent 8 }}
+      annotations:
+        checksum/config: {{ include "checksumTemplates" (list $ "common-configmap" "common-secret" "backend-configmap" "backend-secret" "temporal-workers-configmap") }}
     spec:
       serviceAccountName: {{ template "release.fullname" . }}-cluster-admin
       containers:

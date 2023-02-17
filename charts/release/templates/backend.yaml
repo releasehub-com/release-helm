@@ -24,7 +24,7 @@ spec:
         tier: backend
         {{- include "release.labels" . | nindent 8 }}
       annotations:
-        rollme: {{ randAlphaNum 5 | quote }} # TODO: replace with hash of configmaps and secrets
+        checksum/config: {{ include "checksumTemplates" (list $ "common-configmap" "common-secret" "backend-configmap" "backend-secret") }}
     spec:
       serviceAccountName: {{ template "release.fullname" . }}-cluster-admin
       containers:

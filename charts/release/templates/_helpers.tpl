@@ -66,3 +66,16 @@ Create the name of the service account to use
 {{- printf "{\"auths\":{\"%s\":{\"username\":\"%s\",\"password\":\"%s\",\"email\":\"%s\",\"auth\":\"%s\"}}}" .host .username .password .email (printf "%s:%s" .username .password | b64enc) | b64enc }}
 {{- end }}
 {{- end }}
+
+{{/*
+Generate a checksum of the given templates
+*/}}
+{{- define "checksumTemplates" -}}
+{{- $global := first . -}}
+{{- $configTemplates := rest . -}}
+{{- $configContents := "" -}}
+{{- range $key, $name := $configTemplates }}
+{{- $configContents = cat $configContents (include (printf "%s/%s.yaml" $global.Template.BasePath $name) $global) -}}
+{{- end }}
+{{- sha256sum $configContents -}}
+{{- end }}

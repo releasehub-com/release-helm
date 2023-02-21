@@ -1,6 +1,8 @@
 ingress:
   scheme: internal
   annotations: {}
+serviceAccount:
+  annotations: {}
 app:
   type: NodePort
   replicas: 1

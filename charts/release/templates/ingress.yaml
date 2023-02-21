@@ -16,7 +16,7 @@ spec:
     - {{ required "config.baseDomain is required" .Values.config.baseDomain }}
     - "*.{{ required "config.baseDomain is required" .Values.config.baseDomain }}"
   rules:
-  - host: app.{{ required "config.baseDomain is required" .Values.config.baseDomain }}
+  - host: {{ required "config.baseDomain is required" .Values.config.baseDomain }}
     http:
       paths:
       - backend:

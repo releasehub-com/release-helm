@@ -24,7 +24,7 @@ spec:
         tier: app
         {{- include "release.labels" . | nindent 8 }}
       annotations:
-        checksum/config: {{ include "checksumTemplates" (list $ "common-configmap" "common-secret") }}
+        checksum/config: {{ include "checksumTemplates" (list $ "common-configmap" "common-secret" "frontend-configmap") }}
     spec:
       containers:
       - name: app
@@ -52,6 +52,8 @@ spec:
             name: {{ include "release.fullname" . }}-common-configmap
         - secretRef:
             name: {{ include "release.fullname" . }}-common-secret
+        - configMapRef:
+            name: {{ include "release.fullname" . }}-frontend-configmap
       imagePullSecrets:
       - name: {{ include "release.fullname" . }}-registry-secrets
 ---

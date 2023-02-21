@@ -6,48 +6,37 @@ metadata:
   {{- include "release.labels" . | nindent 4 }}
 data:
   SEMANTIC_LOGGER_ENV: production
-  NEXT_PUBLIC_CRA_FRONTEND_BASE_URL: https://app.{{ .Values.config.baseDomain }}
-  NEXT_PUBLIC_BACKEND_BASE_URL: https://app.{{ .Values.config.baseDomain }}
-  NEXT_PUBLIC_APP_BASE_URL: https://app.{{ .Values.config.baseDomain }}
   DATABASE_HOST: {{ .Values.config.databaseHost | quote }}
   DATABASE_NAME: {{ .Values.config.databaseName | quote }}
+  POSTGRES_HOST_AUTH_METHOD: trust
+  REDIS_SERVICE_HOST: {{ .Values.config.redisHost | default (printf "%s-redis" (include "release.fullname" .)) | quote }}
+  REDIS_SERVICE_PORT: {{ .Values.config.redisPort | quote}}
+  GCP_MAX_WAIT_TIMEOUT: '300'
+  POD_TAIL_TIMEOUT: '300'
+  LOAD_CRON_JOBS: 'true'
+  AWS_DEFAULT_REGION: {{ .Values.config.clusterRegion}}
+  RELEASE_ENV: 'true'
+  RAILS_ENV: production
+  SPACEDUST_ENV: production
 
   # TODO: review and remove anything that shouldn't be included in a self-managed instance
   WORKOS_CLIENT_ID: client_01G3YD8A3QD15FDGJD79CKY06N
   BITBUCKET_APP_CLIENT_ID: 5sjAXgLFvP7XtfK84M
   GITLAB_APP_CLIENT_ID: 88f191e0b74c00270dd6da3a4027d37f38fc56d061a4ae23011fef0af2003a93
-  REDIS_SERVICE_HOST: {{ .Values.config.redisHost | default (printf "%s-redis" (include "release.fullname" .)) | quote }}
-  REDIS_SERVICE_PORT: {{ .Values.config.redisPort | quote}}
-  POD_TAIL_TIMEOUT: '300'
-  LOAD_CRON_JOBS: 'true'
   GITLAB_CLIENT_ID: 88f191e0b74c00270dd6da3a4027d37f38fc56d061a4ae23011fef0af2003a93
   REDSHIFT_METRICS_URL: https://metrics-api.releasehub.com/v1/metrics/events/
   GITHUB_APP_ID: '92839'
   GITHUB_APP_NAME: release-com
   GITHUB_APP_PEM_KEY_FILE: releaseapp-io.2020-12-15.private-key.pem
   AVATAR_CLOUDFRONT: https://avatar.release.com/
-  AWS_DEFAULT_REGION: us-west-2
   BOT_DETECTION_REGEX: AnonX|Romeo-musicBot|telegram-bot|telegra\.ph|yukki|telegram|megasdkrest|youtube_dl|qbittorrent
-  POSTGRES_HOST_AUTH_METHOD: trust
-  RAILS_FORCE_SSL: 'true'
-  RELEASE_ENV: 'true'
-  RAILS_ENV: production
-  SPACEDUST_ENV: production
-  RAILS_LOG_TO_STDOUT: 'true'
-  RAILS_SERVE_STATIC_FILES: 'true'
-  FRONTEND_BASE_URL: https://app.{{ .Values.config.baseDomain }}
-  FRONTEND_INGRESS_URL: https://app.{{ .Values.config.baseDomain }}
-  FRONTEND_INGRESS_HOST: app.{{ .Values.config.baseDomain }}
+  FRONTEND_BASE_URL: https://{{ .Values.config.baseDomain }}
+  FRONTEND_INGRESS_URL: https://{{ .Values.config.baseDomain }}
+  FRONTEND_INGRESS_HOST: {{ .Values.config.baseDomain }}
   BACKEND_BASE_URL: https://api.{{ .Values.config.baseDomain }}
   BACKEND_INGRESS_URL: https://api.{{ .Values.config.baseDomain }}
   BACKEND_INGRESS_HOST: api.{{ .Values.config.baseDomain }}
   CONSOLE_INGRESS_URL: https://console.{{ .Values.config.baseDomain }}
   CONSOLE_INGRESS_HOST: console.{{ .Values.config.baseDomain }}
-  GCP_MAX_WAIT_TIMEOUT: '300'
   APP_INGRESS_URL: https://create-app.{{ .Values.config.baseDomain }}
   APP_INGRESS_HOST: create-app.{{ .Values.config.baseDomain }}
-  REACT_APP_APP_BASE_URL: https://create-app.{{ .Values.config.baseDomain }}
-  NEXT_PUBLIC_CRA_FRONTEND_BASE_URL: https://app.{{ .Values.config.baseDomain }}
-  NEXT_PUBLIC_BACKEND_BASE_URL: https://api.{{ .Values.config.baseDomain }}
-  SEMANTIC_LOGGER_ENV: production
-  NEXT_PUBLIC_APP_BASE_URL: https://create-app.{{ .Values.config.baseDomain }}

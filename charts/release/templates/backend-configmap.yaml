@@ -15,6 +15,7 @@ data:
   RELEASE_VCS_URL: {{ required "config.vcsUrl is required" .Values.config.vcsUrl | quote }}
   RELEASE_GITLAB_APP_CLIENT_ID: {{ required "config.gitlabAppClientId is required" .Values.config.gitlabAppClientId | quote }}
   RELEASE_SUPERUSER_EMAIL: {{ required "config.superuserEmail is required" .Values.config.superuserEmail | quote }}
+  ADMIN_UI_USERNAME: {{ required "config.superuserEmail is required" .Values.config.superuserEmail | quote }}
   RELEASE_SUBDOMAIN: {{ required "config.clusterSubdomain is required" .Values.config.clusterSubdomain | quote }}
   SYMMETRIC_ENCRYPTION_CONFIG: /config/symmetric-encryption.yml
   TEMPORAL_HOST: {{ include "temporal.componentname" (list . "frontend") }}

@@ -42,8 +42,6 @@ cert-manager:
   enabled: true
 kubernetesClusterDomain: cluster.local
 config:
-  adminUiPassword: ""
-  adminUiUsername: ""
   airtableApiKey: ""
   analyticsGoogleServiceAccountCredsPath: ""
   analyticsRedshiftDbUrl: ""

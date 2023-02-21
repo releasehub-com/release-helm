@@ -4,6 +4,7 @@ ingress:
 serviceAccount:
   annotations: {}
 app:
+  podAnnotations: {}
   type: NodePort
   replicas: 1
   ports:
@@ -12,6 +13,7 @@ app:
     protocol: TCP
     targetPort: 4001
 frontend:
+  podAnnotations: {}
   type: NodePort
   replicas: 1
   ports:
@@ -20,8 +22,10 @@ frontend:
     protocol: TCP
     targetPort: 4000
 sidekiq:
+  podAnnotations: {}
   replicas: 1
 backend:
+  podAnnotations: {}
   type: NodePort
   replicas: 1
   ports:
@@ -30,6 +34,7 @@ backend:
     protocol: TCP
     targetPort: 3000
 console:
+  podAnnotations: {}
   type: NodePort
   replicas: 1
   ports:

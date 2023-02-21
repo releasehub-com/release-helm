@@ -25,6 +25,9 @@ spec:
         {{- include "release.labels" . | nindent 8 }}
       annotations:
         checksum/config: {{ include "checksumTemplates" (list $ "common-configmap" "common-secret" "frontend-configmap") }}
+{{- with .Values.frontend.podAnnotations }}
+{{ toYaml . | indent 8 }}
+{{- end }}
     spec:
       containers:
       - name: frontend

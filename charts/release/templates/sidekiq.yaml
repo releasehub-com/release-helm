@@ -25,6 +25,12 @@ spec:
         {{- include "release.labels" . | nindent 8 }}
       annotations:
         checksum/config: {{ include "checksumTemplates" (list $ "common-configmap" "common-secret" "backend-configmap" "backend-secret" "sidekiq-configmap") }}
+{{- with .Values.backend.podAnnotations }}
+{{ toYaml . | indent 8 }}
+{{- end }}
+{{- with .Values.sidekiq.podAnnotations }}
+{{ toYaml . | indent 8 }}
+{{- end }}
     spec:
       serviceAccountName: {{ template "release.fullname" . }}-cluster-admin
       containers:

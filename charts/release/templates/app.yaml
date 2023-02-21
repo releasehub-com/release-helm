@@ -24,7 +24,10 @@ spec:
         tier: app
         {{- include "release.labels" . | nindent 8 }}
       annotations:
-        checksum/config: {{ include "checksumTemplates" (list $ "common-configmap" "common-secret" "frontend-configmap") }}
+        checksum/config: {{ include "checksumTemplates" (list $ "common-configmap" "common-secret" ) }}
+{{- with .Values.app.podAnnotations }}
+{{ toYaml . | indent 8 }}
+{{- end }}
     spec:
       containers:
       - name: app

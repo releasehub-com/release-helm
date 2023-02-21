@@ -5,12 +5,17 @@ metadata:
   labels:
   {{- include "release.labels" . | nindent 4 }}
   annotations:
+    helm.sh/resource-policy: keep
+    {{- if eq (default .Values.ingress.ingressClassName "alb") "alb" }}
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80, "HTTPS":443}]'
     alb.ingress.kubernetes.io/scheme: {{ .Values.ingress.scheme | quote }}
     alb.ingress.kubernetes.io/ssl-redirect: '443'
-    helm.sh/resource-policy: keep
+    {{- end }}
+{{- with .Values.ingress.annotations }}
+{{ toYaml . | indent 4 }}
+{{- end }}
 spec:
-  ingressClassName: alb
+  ingressClassName: {{ .Values.ingress.ingressClassName | default "alb" | quote }}
   tls:
   - hosts:
     - {{ required "config.baseDomain is required" .Values.config.baseDomain }}

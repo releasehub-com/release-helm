@@ -1,5 +1,6 @@
 ingress:
   scheme: internal
+  annotations: {}
 app:
   type: NodePort
   replicas: 1

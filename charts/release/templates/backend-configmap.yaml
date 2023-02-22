@@ -6,6 +6,9 @@ metadata:
   {{- include "release.labels" . | nindent 4 }}
 data:
   SEMANTIC_LOGGER_APP: spacedust-backend
+  DATABASE_NAME: {{ .Values.config.databaseName | quote }}
+  DATABASE_USER: {{ .Values.config.databaseUser | quote }}
+  DATABASE_HOST: {{ .Values.config.databaseHost | default (printf "%s-db" (include "release.fullname" .)) | quote }}
   RELEASE_CLOUD_PROVIDER: {{ required "config.cloudProvider is required" .Values.config.cloudProvider | quote }}
   RELEASE_CLOUD_ROLE: {{ required "config.cloudRole is required" .Values.config.cloudRole | quote }}
   RELEASE_CLUSTER_CONTEXT: {{ required "config.clusterContext is required" .Values.config.clusterContext | quote }}

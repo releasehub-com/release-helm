@@ -6,8 +6,6 @@ metadata:
   {{- include "release.labels" . | nindent 4 }}
 data:
   SEMANTIC_LOGGER_ENV: production
-  DATABASE_HOST: {{ .Values.config.databaseHost | quote }}
-  DATABASE_NAME: {{ .Values.config.databaseName | quote }}
   POSTGRES_HOST_AUTH_METHOD: trust
   REDIS_SERVICE_HOST: {{ .Values.config.redisHost | default (printf "%s-redis" (include "release.fullname" .)) | quote }}
   REDIS_SERVICE_PORT: {{ .Values.config.redisPort | quote}}

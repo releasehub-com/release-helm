@@ -65,7 +65,7 @@ config:
   contentfulPreviewToken: ""
   contentfulSpaceId: ""
   databasePassword: ""
-  databaseUser: ""
+  databaseUser: "postgres"
   databaseName: "release"
   ddApiKey: ""
   ddAppKey: ""

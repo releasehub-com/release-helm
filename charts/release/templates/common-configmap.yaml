@@ -16,18 +16,6 @@ data:
   RELEASE_ENV: 'true'
   RAILS_ENV: production
   SPACEDUST_ENV: production
-
-  # TODO: review and remove anything that shouldn't be included in a self-managed instance
-  WORKOS_CLIENT_ID: client_01G3YD8A3QD15FDGJD79CKY06N
-  BITBUCKET_APP_CLIENT_ID: 5sjAXgLFvP7XtfK84M
-  GITLAB_APP_CLIENT_ID: 88f191e0b74c00270dd6da3a4027d37f38fc56d061a4ae23011fef0af2003a93
-  GITLAB_CLIENT_ID: 88f191e0b74c00270dd6da3a4027d37f38fc56d061a4ae23011fef0af2003a93
-  REDSHIFT_METRICS_URL: https://metrics-api.releasehub.com/v1/metrics/events/
-  GITHUB_APP_ID: '92839'
-  GITHUB_APP_NAME: release-com
-  GITHUB_APP_PEM_KEY_FILE: releaseapp-io.2020-12-15.private-key.pem
-  AVATAR_CLOUDFRONT: https://avatar.release.com/
-  BOT_DETECTION_REGEX: AnonX|Romeo-musicBot|telegram-bot|telegra\.ph|yukki|telegram|megasdkrest|youtube_dl|qbittorrent
   FRONTEND_BASE_URL: https://{{ .Values.config.baseDomain }}
   FRONTEND_INGRESS_URL: https://{{ .Values.config.baseDomain }}
   FRONTEND_INGRESS_HOST: {{ .Values.config.baseDomain }}
@@ -38,3 +26,4 @@ data:
   CONSOLE_INGRESS_HOST: console.{{ .Values.config.baseDomain }}
   APP_INGRESS_URL: https://create-app.{{ .Values.config.baseDomain }}
   APP_INGRESS_HOST: create-app.{{ .Values.config.baseDomain }}
+  AVATAR_CLOUDFRONT: https://avatar.release.com/

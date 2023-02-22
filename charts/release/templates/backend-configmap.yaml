@@ -18,6 +18,7 @@ data:
   ADMIN_UI_USERNAME: {{ required "config.superuserEmail is required" .Values.config.superuserEmail | quote }}
   RELEASE_SUBDOMAIN: {{ required "config.clusterSubdomain is required" .Values.config.clusterSubdomain | quote }}
   SYMMETRIC_ENCRYPTION_CONFIG: /config/symmetric-encryption.yml
+  RAILS_CREDENTIALS_CONTENT_PATH: /config/credentials.yml.enc
   TEMPORAL_HOST: {{ include "temporal.componentname" (list . "frontend") }}
   TEMPORAL_PORT: "7233"
   TEMPORAL_NAMESPACE: release

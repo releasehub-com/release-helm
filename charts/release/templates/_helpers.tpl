@@ -79,3 +79,9 @@ Generate a checksum of the given templates
 {{- end }}
 {{- sha256sum $configContents -}}
 {{- end }}
+
+{{- define "railsMasterKeySecretEncoded" -}}
+{{- $secretObj := (lookup "v1" "Secret" .Release.Namespace (print (include "release.fullname" .) "-backend-secret") | default dict) }}
+{{- $secretData := (get $secretObj "data") | default dict }}
+{{- print ((get $secretData "RAILS_MASTER_KEY") | default (randAlphaNum 32 | b64enc)) }}
+{{- end }}

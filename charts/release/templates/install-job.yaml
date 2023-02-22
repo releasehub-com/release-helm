@@ -22,6 +22,10 @@ spec:
                 bundle exec symmetric-encryption --generate --key-path /config/symmetric-encryption
               fi
 
+              if [ ! -e "$RAILS_CREDENTIALS_CONTENT_PATH" ]; then
+                bundle exec rails self_managed:generate_credentials
+              fi
+
               if [ ! -e /config/release-db-initialized ]; then
                 bundle exec rails db:create db:schema:load db:migrate self_managed:install
                 touch /config/release-db-initialized

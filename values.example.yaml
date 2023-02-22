@@ -1,0 +1,51 @@
+---
+# Custom ingress configuration
+# Defaults to ALB ingress if not specified
+ingress:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+  ingressClassName: nginx
+
+# Release will provide these credentials to allow you to pull
+# our container images
+containerRegistry:
+  host: <provided-by-release>
+  username: <provided-by-release>
+  password: <provided-by-release>
+
+# If needed you can provide a custom annotation for the ServiceAccount to configure
+# your cloud provider IAM access.
+serviceAccount:
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::111111111111:role/release-service-account
+
+config:
+  # Account configuration
+  accountName: My Company Name
+  baseDomain: release.example.com
+  superuserEmail: admin@example.com
+  superuserPassword: password1234
+
+  # The ID of an EFS filesystem used by Release to store configuration data and cache
+  efsFilesystemId: fs-00000000000000000
+
+  # Private GitLab configuration
+  vcsPlatform: gitlab
+  vcsUrl: https://gitlab.example.com
+  gitlabAppClientId: <oauth-app-client-id>
+  gitlabAppClientSecret: <oauth-app-client-secret>
+
+  # Cloud provider
+  cloudProvider: aws
+  cloudRole: arn:aws:iam::111111111111:role/my-release-role
+
+  # Subdomain of Route53 hosted zone used for environments deployed by Release
+  clusterSubdomain: release-envs.example.com
+  clusterContext: my-cluster
+  clusterRegion: us-west-2
+
+  # PostgreSQL database credentials
+  # If not specified the chart will run a postgres container in the cluster suitable for testing
+  databaseHost: <my-db-host>
+  databaseUser: <my-db-user>
+  databasePassword: <my-db-password>

@@ -23,7 +23,7 @@ serviceAccount:
 backend:
   podLabels:
     my-label: <value>
-  podLabels:
+  podAnnotations:
     my-annotation: <value>
  
 config:

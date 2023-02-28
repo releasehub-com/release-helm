@@ -19,6 +19,13 @@ serviceAccount:
   annotations:
     eks.amazonaws.com/role-arn: arn:aws:iam::111111111111:role/release-service-account
 
+# You can also apply labels and annotations to pods
+backend:
+  podLabels:
+    my-label: <value>
+  podLabels:
+    my-annotation: <value>
+ 
 config:
   # Account configuration
   accountName: My Company Name

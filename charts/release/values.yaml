@@ -5,6 +5,7 @@ serviceAccount:
   annotations: {}
 app:
   podAnnotations: {}
+  podLabels: {}
   type: NodePort
   replicas: 1
   ports:
@@ -14,6 +15,7 @@ app:
     targetPort: 4001
 frontend:
   podAnnotations: {}
+  podLabels: {}
   type: NodePort
   replicas: 1
   ports:
@@ -23,9 +25,11 @@ frontend:
     targetPort: 4000
 sidekiq:
   podAnnotations: {}
+  podLabels: {}
   replicas: 1
 backend:
   podAnnotations: {}
+  podLabels: {}
   type: NodePort
   replicas: 1
   ports:
@@ -35,6 +39,7 @@ backend:
     targetPort: 3000
 console:
   podAnnotations: {}
+  podLabels: {}
   type: NodePort
   replicas: 1
   ports:

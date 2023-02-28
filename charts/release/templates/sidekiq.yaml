@@ -23,6 +23,12 @@ spec:
         app: sidekiq
         tier: sidekiq
         {{- include "release.labels" . | nindent 8 }}
+{{- with .Values.backend.podLabels }}
+{{ toYaml . | indent 8 }}
+{{- end }}
+{{- with .Values.sidekiq.podLabels }}
+{{ toYaml . | indent 8 }}
+{{- end }}
       annotations:
         checksum/config: {{ include "checksumTemplates" (list $ "common-configmap" "common-secret" "backend-configmap" "backend-secret" "sidekiq-configmap") }}
 {{- with .Values.backend.podAnnotations }}

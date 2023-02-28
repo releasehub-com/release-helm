@@ -23,6 +23,12 @@ spec:
         app: console
         tier: console
         {{- include "release.labels" . | nindent 8 }}
+{{- with .Values.backend.podLabels }}
+{{ toYaml . | indent 8 }}
+{{- end }}
+{{- with .Values.console.podLabels }}
+{{ toYaml . | indent 8 }}
+{{- end }}
       annotations:
         checksum/config: {{ include "checksumTemplates" (list $ "common-configmap" "common-secret" "backend-configmap" "backend-secret" "console-secret") }}
 {{- with .Values.backend.podAnnotations }}

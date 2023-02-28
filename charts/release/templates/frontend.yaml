@@ -23,6 +23,9 @@ spec:
         app: frontend
         tier: frontend
         {{- include "release.labels" . | nindent 8 }}
+{{- with .Values.frontend.podLabels }}
+{{ toYaml . | indent 8 }}
+{{- end }}
       annotations:
         checksum/config: {{ include "checksumTemplates" (list $ "common-configmap" "common-secret" "frontend-configmap") }}
 {{- with .Values.frontend.podAnnotations }}

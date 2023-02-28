@@ -9,7 +9,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteMany
-  storageClassName: {{ include "release.fullname" . }}-nfs
+  storageClassName: {{ .Values.config.storageClassName | default (print (include "release.fullname" . ) "-nfs") }}
   resources:
     requests:
       storage: 5Gi

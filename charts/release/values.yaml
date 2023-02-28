@@ -1,3 +1,5 @@
+storageClass:
+  enabled: false
 ingress:
   scheme: internal
   annotations: {}
@@ -53,6 +55,7 @@ console:
     targetPort: 3000
 kubernetesClusterDomain: cluster.local
 config:
+  storageClassName: ""
   airtableApiKey: ""
   analyticsGoogleServiceAccountCredsPath: ""
   analyticsRedshiftDbUrl: ""

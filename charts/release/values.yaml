@@ -1,5 +1,7 @@
 storageClass:
-  enabled: false
+  enabled: true
+clusterRoleBinding:
+  enabled: true
 ingress:
   scheme: internal
   annotations: {}

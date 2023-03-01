@@ -34,3 +34,5 @@ data:
   # For temporal admintools
   SQL_PLUGIN: postgres
   SQL_PORT: "5432"
+  SQL_USER: {{ .Values.config.databaseUser | default "" | quote }}
+  SQL_HOST: {{ .Values.config.databaseHost | default (printf "%s-db" (include "release.fullname" .)) | quote }}

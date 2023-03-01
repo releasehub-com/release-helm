@@ -20,6 +20,11 @@ spec:
   - hosts:
     - {{ required "config.baseDomain is required" .Values.config.baseDomain }}
     - "*.{{ required "config.baseDomain is required" .Values.config.baseDomain }}"
+    {{- with.Values.ingress.tls }}
+    {{- if .secretName }}
+    secretName: {{ .secretName }}
+    {{- end}}
+    {{- end}}
   rules:
   - host: {{ required "config.baseDomain is required" .Values.config.baseDomain }}
     http:

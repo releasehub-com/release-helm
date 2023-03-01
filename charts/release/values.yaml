@@ -5,6 +5,8 @@ clusterRoleBinding:
 ingress:
   scheme: internal
   annotations: {}
+  tls:
+    secretName: null
 serviceAccount:
   annotations: {}
 app:

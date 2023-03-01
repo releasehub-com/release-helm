@@ -5,6 +5,9 @@ ingress:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
   ingressClassName: nginx
+  # If you use cert-manager you may need to specify a tls secretName
+  tls:
+    secretName: "release-tls-secret"
 
 # Release will provide these credentials to allow you to pull
 # our container images

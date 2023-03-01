@@ -61,13 +61,3 @@ spec:
               number: 8080
         pathType: Prefix
         path: /
-  - host: console.{{ required "config.baseDomain is required" .Values.config.baseDomain }}
-    http:
-      paths:
-      - backend:
-          service:
-            name: {{ include "release.fullname" . }}-console
-            port:
-              number: 3000
-        pathType: Prefix
-        path: /

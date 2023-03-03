@@ -6,8 +6,8 @@ metadata:
   {{- include "release.labels" . | nindent 4 }}
   name: {{ include "release.fullname" . }}-nfs
 parameters:
-  uid: "0" # TODO: don't use root
-  gid: "0"
+  uid: "50377"
+  gid: "50377"
   directoryPerms: "700"
   fileSystemId: {{ required "config.efsFilesystemId is required" .Values.config.efsFilesystemId }}
   provisioningMode: efs-ap

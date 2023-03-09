@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ include "release.fullname" . }}-config
+  name: {{ include "release.fullname" . }}-build
   labels:
   {{- include "release.labels" . | nindent 4 }}
   annotations:
@@ -12,4 +12,4 @@ spec:
   storageClassName: {{ .Values.config.storageClassName | default (print (include "release.fullname" . ) "-nfs") }}
   resources:
     requests:
-      storage: {{ .Values.persistentVolumeClaims.config.storage }}
+      storage: {{ .Values.persistentVolumeClaims.build.storage }}

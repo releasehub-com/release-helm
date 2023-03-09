@@ -68,9 +68,14 @@ spec:
         volumeMounts:
         - name: config
           mountPath: /config
+        - name: build
+          mountPath: /build
       volumes:
       - name: config
         persistentVolumeClaim:
           claimName: {{ include "release.fullname" . }}-config
+      - name: build
+        persistentVolumeClaim:
+          claimName: {{ include "release.fullname" . }}-build
       imagePullSecrets:
       - name: {{ include "release.fullname" . }}-registry-secrets

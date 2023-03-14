@@ -10,7 +10,9 @@ data:
   DATABASE_USER: {{ .Values.config.databaseUser | quote }}
   DATABASE_HOST: {{ .Values.config.databaseHost | default (printf "%s-db" (include "release.fullname" .)) | quote }}
   RELEASE_CLOUD_PROVIDER: {{ required "config.cloudProvider is required" .Values.config.cloudProvider | quote }}
-  RELEASE_CLOUD_ROLE: {{ required "config.cloudRole is required" .Values.config.cloudRole | quote }}
+  {{ if .Values.config.cloudRole }}
+  RELEASE_CLOUD_ROLE: {{ .Values.config.cloudRole | quote }}
+  {{- end }}
   RELEASE_CLUSTER_CONTEXT: {{ required "config.clusterContext is required" .Values.config.clusterContext | quote }}
   RELEASE_CLUSTER_REGION: {{ required "config.clusterRegion is required" .Values.config.clusterRegion | quote }}
   RELEASE_ACCOUNT_NAME: {{ required "config.accountName is required" .Values.config.accountName | quote }}
